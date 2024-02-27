@@ -8,7 +8,7 @@ on:
 
 jobs:
   runscript:
-    name: GetIP
+    name: getip
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
