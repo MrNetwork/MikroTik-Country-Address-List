@@ -1,25 +1,21 @@
-name: "MikroTik Country Address List"
 
-on:
-  push:
-    branches: [ "main" ]
-  schedule:
-    - cron: '*/15 * * * *'
-
+name: MikroTik Country Address List
+on: repository_dispatch
 jobs:
-  runscript:
-    name: getip
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@main
+    resources:
+        name: Update resources
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
 
-      - name: Call a Bash Script
-        run: |
-          bash getip.sh > Iran-Address-List.rsc
-          git config --global user.email "16175284+MrNetwork@users.noreply.github.com"
-          git config --global user.name "MrNetwork"
-          git config credential.helper store
-          git add -A
-          git diff-index --quiet HEAD || git commit -m "Automatic update"
-          git push -f
+            - uses: actions/setup-node@v1
+
+            - name: Fetch resources
+              run: ./getip.sh
+
+            - name: Update resources
+              uses: test-room-7/action-update-file@v1
+              with:
+                  file-path: ./Iran-Address-List.rsc
+                  commit-msg: Update resources
+                  github-token: ${{ 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 }}
